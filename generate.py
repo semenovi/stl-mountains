@@ -48,13 +48,26 @@ def generate_tesseract():
     # Rescale vertices to fit in a sphere with radius 1
     r = np.sqrt(4)
     vertices = vertices / r
-
+    faces = faces[:, :-1]
+    vertices = vertices[:, :-1]
     # Generate facets from faces
+    print('FACES')
+    print(len(faces[0]))
+    print(len(faces[1]))
+    print(len(faces[2]))
+    print('VERTICES')
+    print(len(vertices[0]))
+    print(len(vertices[1]))
+    print(len(vertices[2]))
+
+    print(faces.shape)
+    print(vertices.shape)
+
     facets = []
     for face in faces:
-        normal = np.cross(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]])
+        normal = np.cross(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]], )
         normal = normal / np.sqrt(np.sum(normal**2))
-        for i in range(3, len(face)):
+        for i in range(2, len(face)):
             facets.append(np.concatenate((normal, vertices[face[i-2]], vertices[face[i-1]], vertices[face[i]])))
 
     return np.concatenate(facets).reshape(-1, 12)
@@ -75,9 +88,10 @@ def generate_landscape(x_range=(-1,1), y_range=(-1,1), z_range=(-1,1), num_point
     # Generate facets from the triangles
     facets = []
     for face in simplices:
-        normal = np.cross(points[face[1]] - points[face[0]], points[face[2]] - points[face[0]])
+        normal = np.cross(points[face[1]][:3] - points[face[0]][:3], points[face[2]][:3] - points[face[0]][:3])
         normal = normal / np.sqrt(np.sum(normal**2))
         facets.append(np.concatenate((normal, points[face[0]], points[face[1]], points[face[2]])))
+
 
     return np.concatenate(facets).reshape(-1, 12)
 
@@ -86,7 +100,7 @@ def write_stl_file(filename, facets):
     nfacets = len(facets)
     header = np.zeros(80, dtype=np.uint8)
     np.array([nfacets], dtype=np.uint32).tofile(filename)
-    np.concatenate([facets.reshape(-1) for facets in facets]).astype('float32').tofile(filename, mode='ab')
+    np.concatenate([facets.reshape(-1) for facets in facets]).astype('float32').tofile(filename)
 
 # Generate tesseract and landscape facets
 tesseract_facets = generate_tesseract()

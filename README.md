@@ -8,17 +8,17 @@ This program generates a 3D projection of a hypercube (tesseract) as well as a m
 
 1. Install python and the required libraries (`numpy`, `scipy`).
 
-2. Run the `generate_stl.py` script in the command line using Python:
+2. Run the `generate.py` script in the command line using Python:
 
    ```
-   python generate_stl.py
+   python generate.py
    ```
 
 3. The script will generate a file called `tesseract_landscape.stl` in the same directory, which can be imported into a 3D modeling software or a 3D printer software.
 
 ## Customization
 
-To customize the tesseract or the landscape, you can modify the `generate_tesseract()` and `generate_landscape()` functions in the `generate_stl.py` script respectively. You can also modify the parameters of each function to obtain different forms and shapes.
+To customize the tesseract or the landscape, you can modify the `generate_tesseract()` and `generate_landscape()` functions in the `generate.py` script respectively. You can also modify the parameters of each function to obtain different forms and shapes.
 
 ## Requirements
 
