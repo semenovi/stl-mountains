@@ -45,28 +45,21 @@ def generate_tesseract():
         [2,10,14,6]
     ])
 
+    faces = faces[:, :-1]
+    vertices = vertices[:, :-1]
+
     # Rescale vertices to fit in a sphere with radius 1
     r = np.sqrt(4)
     vertices = vertices / r
-    faces = faces[:, :-1]
-    vertices = vertices[:, :-1]
-    # Generate facets from faces
-    print('FACES')
-    print(len(faces[0]))
-    print(len(faces[1]))
-    print(len(faces[2]))
-    print('VERTICES')
-    print(len(vertices[0]))
-    print(len(vertices[1]))
-    print(len(vertices[2]))
 
-    print(faces.shape)
-    print(vertices.shape)
+    # Generate facets from faces
 
     facets = []
     for face in faces:
         normal = np.cross(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]], )
+        print(normal)
         normal = normal / np.sqrt(np.sum(normal**2))
+
         for i in range(2, len(face)):
             facets.append(np.concatenate((normal, vertices[face[i-2]], vertices[face[i-1]], vertices[face[i]])))
 
